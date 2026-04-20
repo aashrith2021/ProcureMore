@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PrimeBoss UCMAS Manager</title>
+  <link rel="icon" type="image/png" href="ucmaslogo.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <section id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <p class="eyebrow">Admin Access</p>
+      <h2>PrimeBoss Login</h2>
+      <p class="login-copy">Use your admin account to manage students, batches, attendance, payments, and schedules.</p>
+      <form id="loginForm" class="stack-form">
+        <label>
+          Username
+          <input id="loginUsername" type="text" placeholder="admin" required>
+        </label>
+        <label>
+          Password
+          <input id="loginPassword" type="password" placeholder="Enter password" required>
+        </label>
+        <p id="loginError" class="login-error" hidden>Invalid username or password.</p>
+        <button class="primary-button" type="submit">Login</button>
+      </form>
+    </div>
+  </section>
+
+  <div class="app-shell">
+    <header class="hero">
+      <div class="hero-copy-block">
+        <p class="eyebrow">UCMAS Institute Control Center</p>
+        <h1>PrimeBoss UCMAS Manager</h1>
+        <p class="hero-copy">Manage students, batches, attendance dashboards, schedules, and full payment tracking from one place.</p>
+      </div>
+      <div class="hero-stats">
+        <article class="stat-card">
+          <span id="studentCount">0</span>
+          <p>Students</p>
+        </article>
+        <article class="stat-card">
+          <span id="batchCount">0</span>
+          <p>Batches</p>
+        </article>
+        <article class="stat-card">
+          <span id="todayCount">0</span>
+          <p>Schedules</p>
+        </article>
+      </div>
+      <div class="hero-admin">
+        <p id="authStatus" class="auth-badge">Logged out</p>
+        <button id="logoutButton" class="ghost-button" type="button">Logout</button>
+      </div>
+    </header>
+
+    <div id="syncStatus" class="sync-banner">Connecting...</div>
+    <div id="toast" class="toast" hidden></div>
+
+    <main>
+      <section id="homeView" class="app-view is-active">
+        <div class="home-grid">
+          <div class="home-panel">
+            <p class="section-label">Main Page</p>
+            <h2>Quick Actions</h2>
+            <div class="action-grid">
+              <button class="action-card" type="button" data-view-target="attendanceView">
+                <span class="action-time" id="homeDateTime"></span>
+                <strong>Attendance Dashboard</strong>
+              </button>
+              <button class="action-card" type="button" data-view-target="paymentsView">
+                <span class="action-time">Payments</span>
+                <strong>Submit Fee & Check Payments</strong>
+              </button>
+              <button class="action-card" type="button" data-view-target="scheduleView">
+                <span class="action-time">Planning</span>
+                <strong>Schedule Class and Message</strong>
+              </button>
+              <button class="action-card" type="button" data-view-target="batchView">
+                <span class="action-time">Batch Setup</span>
+                <strong>Create Batch with Students</strong>
+              </button>
+              <button class="action-card" type="button" data-view-target="studentsView">
+                <span class="action-time">Student Info</span>
+                <strong>Create or Update Student</strong>
+              </button>
+              <button class="action-card" type="button" data-view-target="assignView">
+                <span class="action-time">Mapping</span>
+                <strong>Add Student to a Batch</strong>
+              </button>
+              <button class="action-card" type="button" data-view-target="combineView">
+                <span class="action-time">Batch Merge</span>
+                <strong>Combine Batches</strong>
+              </button>
+              <button class="action-card action-card-wide" type="button" data-view-target="boardsView">
+                <span class="action-time">Reports</span>
+                <strong>Open Management Boards</strong>
+              </button>
+            </div>
+          </div>
+
+          <div class="home-panel">
+            <p class="section-label">Upcoming Classes</p>
+            <h2>Today and Upcoming Batches</h2>
+            <div id="homeScheduleList" class="activity-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="studentsView" class="app-view">
+        <div class="view-header">
+          <div>
+            <p class="section-label">Student Details</p>
+            <h2>Create or Update Student</h2>
+          </div>
+          <button class="ghost-button home-button" type="button" data-view-target="homeView">Home</button>
+        </div>
+        <form id="studentForm" class="panel form-panel">
+          <input type="hidden" id="studentId">
+          <div class="form-grid">
+            <label>
+              Student Surname
+              <input id="studentSurname" type="text" required>
+            </label>
+            <label>
+              Student Last Name
+              <input id="studentLastName" type="text" required>
+            </label>
+            <label>
+              Gender
+              <select id="studentGender" required>
+                <option value="">Select gender</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+              </select>
+            </label>
+            <label>
+              Date of Birth
+              <input id="studentDob" type="date" required>
+            </label>
+            <label>
+              Father's Name
+              <input id="fatherName" type="text" required>
+            </label>
+            <label>
+              Father's Phone Number
+              <input id="fatherPhone" type="tel" required>
+            </label>
+            <label>
+              Father's Occupation
+              <input id="fatherOccupation" type="text" required>
+            </label>
+            <label>
+              Mother's Name
+              <input id="motherName" type="text" required>
+            </label>
+            <label>
+              Mother's Phone Number
+              <input id="motherPhone" type="tel" required>
+            </label>
+            <label>
+              Mother's Occupation
+              <input id="motherOccupation" type="text" required>
+            </label>
+            <label>
+              School Name
+              <input id="schoolName" type="text" required>
+            </label>
+            <label>
+              Class in School
+              <input id="schoolClass" type="text" required>
+            </label>
+            <label>
+              Email
+              <input id="emailId" type="email">
+            </label>
+            <label>
+              Abacus Level
+              <input id="studentLevel" type="number" min="1" value="1" required>
+            </label>
+            <label class="full-span">
+              Add Student To UCMAS Batch
+              <select id="studentBatch" required></select>
+            </label>
+          </div>
+          <div class="form-row">
+            <button class="primary-button" type="submit">Save Student</button>
+            <button id="resetStudentForm" class="ghost-button" type="button">New Student</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="batchView" class="app-view">
+        <div class="view-header">
+          <div>
+            <p class="section-label">Batch Builder</p>
+            <h2>Create Batch with Students</h2>
+          </div>
+          <button class="ghost-button home-button" type="button" data-view-target="homeView">Home</button>
+        </div>
+        <div class="triple-grid">
+          <form id="batchForm" class="panel form-panel stack-form">
+            <input type="hidden" id="batchId">
+            <label>
+              Batch Name
+              <input id="batchName" type="text" required>
+            </label>
+            <label>
+              Batch Level
+              <input id="batchLevel" type="number" min="1" value="1" required>
+            </label>
+            <label>
+              Notes
+              <input id="batchNotes" type="text" placeholder="Optional batch notes">
+            </label>
+            <label>
+              Add Students
+              <select id="batchStudents" multiple size="8"></select>
+            </label>
+            <button id="batchSubmitButton" class="primary-button" type="submit">Create Batch</button>
+          </form>
+
+          <form id="assignStudentForm" class="panel form-panel stack-form">
+            <div>
+              <p class="section-label">Mapping</p>
+              <h3>Add Student to a Batch</h3>
+            </div>
+            <label>
+              Select Student
+              <select id="assignStudent" required></select>
+            </label>
+            <label>
+              Select Batch
+              <select id="assignBatch" required></select>
+            </label>
+            <button class="primary-button" type="submit">Add to Batch</button>
+          </form>
+
+          <form id="combineBatchForm" class="panel form-panel stack-form">
+            <div>
+              <p class="section-label">Batch Merge</p>
+              <h3>Combine Batches</h3>
+            </div>
+            <label>
+              Select Batches
+              <select id="combineBatchSelection" multiple size="8" required></select>
+            </label>
+            <label>
+              New Combined Batch Name
+              <input id="combinedBatchName" type="text" required>
+            </label>
+            <label>
+              Combined Batch Level
+              <input id="combinedBatchLevel" type="number" min="1" value="1" required>
+            </label>
+            <button class="primary-button" type="submit">Combine Selected Batches</button>
+          </form>
+        </div>
+      </section>
+
+      <section id="assignView" class="app-view">
+        <div class="view-header">
+          <div>
+            <p class="section-label">Mapping</p>
+            <h2>Add Student to a Batch</h2>
+          </div>
+          <button class="ghost-button home-button" type="button" data-view-target="homeView">Home</button>
+        </div>
+        <div class="helper-grid">
+          <button class="action-card" type="button" data-view-target="batchView">
+            <span class="action-time">Relevant Section</span>
+            <strong>Open Batch Builder</strong>
+          </button>
+        </div>
+      </section>
+
+      <section id="combineView" class="app-view">
+        <div class="view-header">
+          <div>
+            <p class="section-label">Batch Merge</p>
+            <h2>Combine Batches</h2>
+          </div>
+          <button class="ghost-button home-button" type="button" data-view-target="homeView">Home</button>
+        </div>
+        <div class="helper-grid">
+          <button class="action-card" type="button" data-view-target="batchView">
+            <span class="action-time">Relevant Section</span>
+            <strong>Open Batch Builder and Combine</strong>
+          </button>
+        </div>
+      </section>
+
+      <section id="attendanceView" class="app-view">
+        <div class="view-header">
+          <div>
+            <p class="section-label">Attendance</p>
+            <h2>Attendance Dashboard</h2>
+          </div>
+          <button class="ghost-button home-button" type="button" data-view-target="homeView">Home</button>
+        </div>
+        <div class="dual-grid">
+          <form id="attendanceForm" class="panel form-panel stack-form">
+            <div>
+              <p class="section-label">Mark Attendance</p>
+              <h3>Batch Attendance</h3>
+            </div>
+            <label>
+              Date
+              <input id="attendanceDate" type="date" required>
+            </label>
+            <label>
+              Select Batch
+              <select id="attendanceBatch" required></select>
+            </label>
+            <div id="attendanceStudents" class="attendance-list"></div>
+            <button class="primary-button" type="submit">Save Attendance</button>
+          </form>
+
+          <div class="panel form-panel stack-form">
+            <div>
+              <p class="section-label">Dashboard</p>
+              <h3>Present vs Absent</h3>
+            </div>
+            <label>
+              Select Batch
+              <select id="attendanceDashboardBatch"></select>
+            </label>
+            <label>
+              Select Date
+              <input id="attendanceDashboardDate" type="date">
+            </label>
+            <div class="chart-card">
+              <canvas id="attendanceChart" width="240" height="240"></canvas>
+              <div id="attendanceLegend" class="legend-list"></div>
+            </div>
+            <div id="attendanceReviewList" class="activity-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="paymentsView" class="app-view">
+        <div class="view-header">
+          <div>
+            <p class="section-label">Payments</p>
+            <h2>Submit Fee and Check Payments</h2>
+          </div>
+          <button class="ghost-button home-button" type="button" data-view-target="homeView">Home</button>
+        </div>
+        <div class="dual-grid">
+          <form id="paymentForm" class="panel form-panel stack-form">
+            <input type="hidden" id="paymentId">
+            <div>
+              <p class="section-label">Submit Fee</p>
+              <h3>Record Payment</h3>
+            </div>
+            <label>
+              Select Student
+              <select id="paymentStudent" required></select>
+            </label>
+            <label>
+              Batch
+              <select id="paymentBatch" required></select>
+            </label>
+            <label>
+              Abacus Level
+              <input id="paymentLevel" type="number" min="1" value="1" required>
+            </label>
+            <label>
+              Amount Paid
+              <input id="paymentAmount" type="number" min="0" step="0.01" required>
+            </label>
+            <label>
+              Dues
+              <input id="paymentDues" type="number" min="0" step="0.01" value="0" required>
+            </label>
+            <label>
+              Payment Mode
+              <select id="paymentMode" required>
+                <option value="">Select mode</option>
+                <option>Cash</option>
+                <option>PhonePe</option>
+                <option>GPay</option>
+                <option>UPI</option>
+              </select>
+            </label>
+            <label>
+              Comments
+              <textarea id="paymentComments" rows="3"></textarea>
+            </label>
+            <label>
+              Payment Date
+              <input id="paymentDate" type="date" required>
+            </label>
+            <button id="paymentSubmitButton" class="primary-button" type="submit">Record Payment</button>
+          </form>
+
+          <div class="panel form-panel stack-form">
+            <div>
+              <p class="section-label">Check Payments</p>
+              <h3>Student and Batch History</h3>
+            </div>
+            <label>
+              View by Student
+              <select id="paymentCheckStudent"></select>
+            </label>
+            <label>
+              View by Batch
+              <select id="paymentCheckBatch"></select>
+            </label>
+            <div id="paymentSummary" class="summary-card"></div>
+            <div id="paymentHistoryList" class="activity-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="scheduleView" class="app-view">
+        <div class="view-header">
+          <div>
+            <p class="section-label">Schedule</p>
+            <h2>Schedule Class and Message</h2>
+          </div>
+          <button class="ghost-button home-button" type="button" data-view-target="homeView">Home</button>
+        </div>
+        <div class="dual-grid">
+          <form id="scheduleForm" class="panel form-panel stack-form">
+            <input type="hidden" id="scheduleId">
+            <div>
+              <p class="section-label">Create or Update Schedule</p>
+              <h3>Batch Schedule</h3>
+            </div>
+            <label>
+              Select Batch
+              <select id="scheduleBatch" required></select>
+            </label>
+            <label>
+              Level
+              <input id="scheduleLevel" type="text" readonly>
+            </label>
+            <label>
+              Day
+              <select id="scheduleDay" required>
+                <option value="">Select day</option>
+                <option>Monday</option>
+                <option>Tuesday</option>
+                <option>Wednesday</option>
+                <option>Thursday</option>
+                <option>Friday</option>
+                <option>Saturday</option>
+                <option>Sunday</option>
+              </select>
+            </label>
+            <label>
+              Venue
+              <select id="scheduleVenue" required>
+                <option value="">Select venue</option>
+                <option>Kakatiya School</option>
+                <option>Our Home</option>
+              </select>
+            </label>
+            <div class="form-grid">
+              <label>
+                From
+                <input id="scheduleFromTime" type="time" required>
+              </label>
+              <label>
+                To
+                <input id="scheduleToTime" type="time" required>
+              </label>
+            </div>
+            <label>
+              Message Preview
+              <textarea id="scheduleMessage" rows="4"></textarea>
+            </label>
+            <button id="scheduleSubmitButton" class="primary-button" type="submit">Save Schedule</button>
+          </form>
+
+          <div class="panel form-panel stack-form">
+            <div>
+              <p class="section-label">Existing Schedules</p>
+              <h3>Update or Delete Schedule</h3>
+            </div>
+            <div id="scheduleManagerList" class="activity-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="boardsView" class="app-view">
+        <div class="view-header">
+          <div>
+            <p class="section-label">Management Boards</p>
+            <h2>Students, Batches, Payments, and Schedules</h2>
+          </div>
+          <button class="ghost-button home-button" type="button" data-view-target="homeView">Home</button>
+        </div>
+        <div class="panel form-panel">
+          <div class="filter-strip">
+            <label>
+              Search Students
+              <input id="studentSearch" type="search" placeholder="Search by name, school, level, phone">
+            </label>
+            <label>
+              Filter by Level
+              <select id="studentLevelFilter">
+                <option value="">All levels</option>
+              </select>
+            </label>
+            <label>
+              Search Batches
+              <input id="batchSearch" type="search" placeholder="Search by batch name, notes, level">
+            </label>
+            <label>
+              Payment Student Filter
+              <select id="paymentStudentFilter">
+                <option value="">All students</option>
+              </select>
+            </label>
+            <label>
+              Payment Batch Filter
+              <select id="paymentBatchFilter">
+                <option value="">All batches</option>
+              </select>
+            </label>
+          </div>
+          <div class="boards">
+            <div class="board">
+              <h3>Student Directory</h3>
+              <div id="studentList" class="list-grid"></div>
+            </div>
+            <div class="board">
+              <h3>Batch List</h3>
+              <div id="batchList" class="list-grid"></div>
+            </div>
+            <div class="board">
+              <h3>Payment History</h3>
+              <div id="paymentList" class="activity-list"></div>
+            </div>
+            <div class="board">
+              <h3>Upcoming Schedules</h3>
+              <div id="scheduleList" class="activity-list"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <button id="backToTopButton" class="back-to-top" type="button" aria-label="Go to top">
+    ↑
+  </button>
+
+  <template id="attendanceRowTemplate">
+    <div class="attendance-row">
+      <span class="attendance-name"></span>
+      <div class="attendance-actions">
+        <label><input type="radio" value="Present"> Present</label>
+        <label><input type="radio" value="Absent"> Absent</label>
+      </div>
+    </div>
+  </template>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
