@@ -1,0 +1,156 @@
+i run a small abacus institue 
+I want to create a web app so that I can keep track of all the students and the classes which im managing
+
+
+use the image as a reference for all the funcalatioes i need in my app and 
+
+take time a create a web app using the image
+
+
+-----
+
+i want all the items to be present on the top on widgets so that in mobile also it looks good 
+as soon as you tap on the widget it takes you there
+
+
+and I want to store this info in a db
+check if there are any options that are available for free to use
+and also I need steps to host it online for free
+
+-------
+
+I have updated the supabase config and can see cloud mode
+
+do these changes
+login for admin - keep username as admin and password as primeboss2026 
+search and filters
+edit/delete for classes and payments
+
+-------
+
+If you want, the next useful step is adding proper Supabase Auth so this login is enforced by the backend too, not just in the browser UI.
+
+i need from supabase auth only
+will browser UI work in the current setup if I go online?
+
+
+------
+
+let's do the Supabase Auth later
+
+but guide me how to host this online for me step by step
+
+----
+
+help me initialize git locally and prepare the repo structure
+
+let me know if you need any action from my end
+
+-----
+
+Example:
+
+Name: Aashrith 
+Email: aashrithkan2@gmail.com
+
+------
+
+primeboss-abacus-manager keep the repo nameas this
+
+----
+
+https://github.com/aashrith2021/primeboss-abacus-manager.git
+
+-----
+
+guide me through Cloudflare Pages setup click by click from here.
+
+-----
+
+i just reviewed the website and here are a few changes I want
+when I click on the widget
+it is redirecting me to the section by the widgets are convering the entire page even after redirecting
+
+so once redirected, the widgets should hide and 
+
+
+I also need a go to top of the page navigator , keep it small and simple
+
+
+and use ucmaslogo as favicon for the browser tab
+-------
+
+
+things to change
+I want a main page which should contain only buttons and any upcoming classes
+and upon clicking the buttons it should take me to the desired component. and every redirected page should have home button to switch back to main page
+
+
+and when a new student is added
+I want to add them to any class 
+So either it should come in the drop down while filling the student details
+and I can also add it to the class using a new component called "Add student to a class"
+
+so that when I select the class to take attandance it I can list down all the students present in that classs
+
+I also need a new section in attendance to check the attendance of that particular class for a day, so while marking attendance give an option to select only date instead of date and time
+
+I like the management boards concept but search classes isnt working as I can see records which are not even mapped to that class
+and when a particular student is selected from the fee student filter, i can see alll the students in student directory
+So thedata should only show as per filters that are set.
+
+
+and top navigator is working good but it would be better if it is a symbol instead if text
+
+
+--------
+
+below are the few more changes I want to update in the web app
+1. I want a component or option to update or delete schedule which is already created
+2. whenever a student is saved or a class is created or updated, i want to see a notofication saying it is created succesfully  and will disapper after 1 seconds , same while scheduling the class as well
+3. when you select a batch in attendance, can you also draw a pie chart for absentees and present students but also mention total number of students as a legend with the number but the pie chart should contains numbers of absets and presents and feel free to add more features and make all these post attendance actions into Attendance Dashboard
+4. also when I am creating a batch, I want to add a level to that batch
+and rename "Create Class with Students" with "Create Batch with Students"
+5. In "Create or Update Student" 
+update all the fields to STUDENT SURNAME,	STUDENT LAST NAME,	GENDER,	DATE OF BIRTH,	FATHER'S NAME,	PHONE NUMBER,	FATHER'S OCCUPATION,	MOTHER'S NAME,	PHONE NUMBER,MOTHER	OCCUPATION,	SCHOOL NAME,	CLASS IN SCHOOL,	EMAIL, Abacus Level(should be 1 by default), Add Student To Ucmas Batch (this should be a dropdown)
+feel free to drop all the existing data and give me sample records to load into table
+6. sometimes we may combine 2 batches into 1, so I need 1 more component that will ask me to select batches and give a new name to the combined batch. all the students present in that old batches now has to be mapped to this new batch 
+7. Under Payments along with "Submit Fee", add 2 more things, 'Payment mode' and in dropdown keep [cash, phonepe, gpay, UPI] and 'comments' and 'dues', I also want separate section as Check payments,
+So that I can track a particular student complete payment history accross all the levels when he moves forward and also I can clear his dues once paid and the dues has to add to the payment already provided for that level. And I should also be able to check the payment for a particular batch to track how many students paid and how much so that I can track the pending payments also from that particular batch.
+8. In the "Schedule Class and Message", add "venue" (drop down - ['Kakatiya School', ''our home']), add from and to for timing and add 'Level' - get this from batch details as we selct from "Select Class" and also in the message preview currently it is like this <class name> class is scheduled for <day> at <time>. Please inform students and parents."
+rewrite it to "Attend UCMAS ABACUS <class name> CLASS at <timings from and to> at <venue>.
+9. try to add sections as buttons if they are relavant to the component selected
+
+
+if you want to drop the entire data which is loaded or alter the existing tables which are already created, feel free to go ahead
+
+
+-------
+
+Open Attendance Dashboard and confirm:
+
+date-only attendance - yes 
+batch dropdown - dropdown not working, switch back to old format incase if safe mode 
+student list for selected batch - no dropdown so can be selected or viewed 
+chart area - no dropdwn so no chart 
+legend for present, absent, total students - no dropdwn so no 
+
+
+Test one save action:
+
+edit a schedule or create a student -  can see students 
+confirm you see the small success notification - yes while saving
+refresh the page - yes 
+confirm the change still exists - only Ui changes are there but the link broke or none of the sample data is reflected anywhere
+
+sample data not showing
+attendance chart not visible
+no dropdown is working
+
+
+Add Student To UCMAS Batch was working prevously but not now
+
+use the image for writing the sample data
+
+
+and also Remove or Decrease the size of overview of students batches and schedules as it is taking more space when opened on a mobile website and set it in the end of the website
